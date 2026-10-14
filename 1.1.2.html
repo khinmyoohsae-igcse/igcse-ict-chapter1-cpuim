@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGCSE ICT - 1.2 CPU & Internal Memory Quiz</title>
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #131d31;
+            --border-color: #223354;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        header h1 {
+            color: var(--accent);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-status {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .score-pill {
+            background-color: #0c4a6e;
+            color: #7dd3fc;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid #0284c7;
+        }
+
+        .card {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            background-color: #1e293b;
+            color: var(--text-main);
+            padding: 1rem 1.25rem;
+            border-radius: 0.85rem;
+            border: 1px solid #334155;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #283548;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn.correct {
+            background-color: #064e3b !important;
+            border-color: #059669 !important;
+            color: #ecfdf5 !important;
+        }
+
+        .option-btn.incorrect {
+            background-color: #7f1d1d !important;
+            border-color: #dc2626 !important;
+            color: #fee2e2 !important;
+        }
+
+        .feedback-box {
+            padding: 1.15rem;
+            border-radius: 0.85rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feedback-box.correct-feedback {
+            background-color: #022c22;
+            border: 1px solid #047857;
+            color: #a7f3d0;
+        }
+
+        .feedback-box.incorrect-feedback {
+            background-color: #450a0a;
+            border: 1px solid #b91c1c;
+            color: #fecdd3;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.85rem 1.75rem;
+            border-radius: 0.85rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .results-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .results-card h2 {
+            font-size: 2.25rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .results-card p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>IGCSE ICT Practice Quiz</h1>
+        <p>Topics 1.2.1 CPU & 1.2.2 Internal Memory</p>
+    </header>
+
+    <main>
+        <div class="quiz-status">
+            <span id="question-counter">Question 1 of 30</span>
+            <span id="score-display" class="score-pill">Score: 0</span>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="card">
+            <div id="question-box" class="question-text">
+                Loading question...
+            </div>
+
+            <div id="options-container" class="options-list">
+                <!-- Options populated dynamically -->
+            </div>
+
+            <div id="feedback-box" class="feedback-box hidden">
+                <!-- Feedback populated dynamically -->
+            </div>
+
+            <div style="display: flex; justify-content: flex-end;">
+                <button id="next-btn" onclick="nextQuestion()" class="btn-primary hidden">Next Question</button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div id="results-container" class="card results-card hidden">
+            <h2>Quiz Completed! 🎉</h2>
+            <p id="final-score">You scored X out of 30</p>
+            <button onclick="restartQuiz()" class="btn-primary">Restart Quiz</button>
+        </div>
+    </main>
+
+    <footer>
+        IGCSE ICT Revision &bull; Main Components of Computer Systems
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the primary role of the Central Processing Unit (CPU) in a computer system?",
+                options: [
+                    { text: "To permanently store large user files and operating system backups", isCorrect: false, rationale: "Permanent file storage is handled by backing storage, not the CPU." },
+                    { text: "To execute program instructions, process data, and control other computer components", isCorrect: true, rationale: "The CPU is responsible for running program instructions, processing data, and managing system components." },
+                    { text: "To convert physical sensor analogue signals into digital binary numbers", isCorrect: false, rationale: "Analogue-to-digital conversion is performed by an ADC." },
+                    { text: "To supply continuous direct current electrical power to internal microchips", isCorrect: false, rationale: "Electrical power is supplied by the Power Supply Unit (PSU)." }
+                ]
+            },
+            {
+                question: "Which of the following sub-components are included within the CPU?",
+                options: [
+                    { text: "RAM and ROM memory chips", isCorrect: false, rationale: "RAM and ROM are internal memory chips located on the motherboard, separate from the CPU." },
+                    { text: "Control unit, arithmetic and logic unit, clock, and registers", isCorrect: true, rationale: "The CPU consists of the CU, ALU, clock, and registers." },
+                    { text: "Hard disk drives and solid-state drives", isCorrect: false, rationale: "HDDs and SSDs are backing storage devices." },
+                    { text: "Network interface cards and sound cards", isCorrect: false, rationale: "NICs and sound cards are expansion cards connected to the motherboard." }
+                ]
+            },
+            {
+                question: "What is the specific function of the Control Unit (CU) within the CPU?",
+                options: [
+                    { text: "To perform mathematical calculations and logical comparisons", isCorrect: false, rationale: "Mathematical calculations and logical comparisons are handled by the ALU." },
+                    { text: "To coordinate actions, manage components, and control program instruction execution by sending control signals", isCorrect: true, rationale: "The CU coordinates computer actions, manages components, and directs instruction execution through control signals." },
+                    { text: "To maintain the system date and time using a small lithium battery", isCorrect: false, rationale: "Date and time maintenance is handled by the CMOS chip." },
+                    { text: "To translate high-level source code into binary machine code", isCorrect: false, rationale: "Code translation is performed by a software compiler." }
+                ]
+            },
+            {
+                question: "Which component of the CPU carries out mathematical operations such as addition, subtraction, multiplication, and division?",
+                options: [
+                    { text: "Control Unit (CU)", isCorrect: false, rationale: "The CU manages and directs operations rather than executing math." },
+                    { text: "Arithmetic and Logic Unit (ALU)", isCorrect: true, rationale: "The ALU performs arithmetic operations and logical decisions." },
+                    { text: "System Clock", isCorrect: false, rationale: "The system clock controls the rate at which instructions are processed." },
+                    { text: "Read-Only Memory (ROM)", isCorrect: false, rationale: "ROM is internal memory, not part of the CPU arithmetic circuitry." }
+                ]
+            },
+            {
+                question: "Besides arithmetic operations, what other crucial type of operation does the ALU perform?",
+                options: [
+                    { text: "Logical comparisons (such as checking if one number is greater than another)", isCorrect: true, rationale: "The ALU evaluates logical conditions and comparisons such as equal to, greater than, or less than." },
+                    { text: "Managing network data packet routing across Ethernet cables", isCorrect: false, rationale: "Network routing is handled by network interface cards and routers." },
+                    { text: "Compressing video files before saving them to backing storage", isCorrect: false, rationale: "File compression is managed by utility or application software." },
+                    { text: "Converting digital audio files into analogue speaker signals", isCorrect: false, rationale: "Audio conversion is performed by a DAC in the sound card." }
+                ]
+            },
+            {
+                question: "What is the function of the CPU clock?",
+                options: [
+                    { text: "To keep track of the current time of day for the operating system desktop", isCorrect: false, rationale: "Real-time clock tracking for calendar time is maintained by CMOS, not the CPU execution clock." },
+                    { text: "To control the rate at which the CPU works by sending out electronic pulses", isCorrect: true, rationale: "The clock controls work rate by sending pulses, processing one instruction per pulse." },
+                    { text: "To synchronize data transfer rates between USB peripherals and RAM", isCorrect: false, rationale: "USB bus transfer rates are governed by controller chips." },
+                    { text: "To refresh volatile memory cells inside RAM chips constantly", isCorrect: false, rationale: "RAM refreshing is managed by memory controller circuits." }
+                ]
+            },
+            {
+                question: "How many instructions can the Control Unit process for each electronic pulse sent by the CPU clock?",
+                options: [
+                    { text: "Exactly one instruction per pulse", isCorrect: true, rationale: "The control unit can process one instruction for each pulse sent by the quartz crystal clock." },
+                    { text: "Ten instructions per pulse", isCorrect: false, rationale: "The standard standard execution rate is one instruction per pulse." },
+                    { text: "An unlimited number of instructions simultaneously", isCorrect: false, rationale: "Instruction execution is governed step-by-step by clock pulses." },
+                    { text: "Only one instruction every ten pulses", isCorrect: false, rationale: "One instruction is processed per pulse." }
+                ]
+            },
+            {
+                question: "What is clock speed?",
+                options: [
+                    { text: "The physical size of the microprocessor silicon chip", isCorrect: false, rationale: "Chip size is measured in nanometers or square millimeters." },
+                    { text: "The total storage capacity of internal RAM and ROM memory", isCorrect: false, rationale: "Memory capacity is measured in gigabytes (GB)." },
+                    { text: "The number of clock pulses per second generated by the CPU crystal", isCorrect: true, rationale: "Clock speed refers to the number of pulses per second, determining CPU processing speed." },
+                    { text: "The maximum data transfer rate of backing storage hard drives", isCorrect: false, rationale: "Drive transfer rates measure I/O bandwidth." }
+                ]
+            },
+            {
+                question: "What is the general effect of having a higher CPU clock speed?",
+                options: [
+                    { text: "The computer will consume more electrical power while running slower overall.", isCorrect: false, rationale: "Higher clock speed increases processing speed." },
+                    { text: "The CPU will be able to carry out program instructions faster", isCorrect: true, rationale: "Higher clock speed means more pulses per second, allowing faster instruction execution." },
+                    { text: "The internal RAM memory capacity will automatically expand.", isCorrect: false, rationale: "Clock speed does not alter physical RAM capacity." },
+                    { text: "Backing storage drives will spin faster on magnetic platters.", isCorrect: false, rationale: "Disk rotation speeds are independent of CPU clock speed." }
+                ]
+            },
+            {
+                question: "What are CPU registers?",
+                options: [
+                    { text: "Permanent storage chips on the motherboard holding BIOS startup code", isCorrect: false, rationale: "BIOS startup code is stored on ROM chips." },
+                    { text: "Tiny, high-speed memory locations within the CPU itself that store data and instructions currently in use", isCorrect: true, rationale: "Registers are internal CPU memory locations storing active instructions and data." },
+                    { text: "Software registration keys required to activate operating systems", isCorrect: false, rationale: "Software keys relate to licensing, not hardware registers." },
+                    { text: "Expansion slots on the motherboard used for graphics cards", isCorrect: false, rationale: "Expansion slots are hardware ports like PCIe." }
+                ]
+            },
+            {
+                question: "What is internal memory (also known as primary or main memory) used for in a computer system?",
+                options: [
+                    { text: "To store system startup files, currently running program instructions, and active data", isCorrect: true, rationale: "Internal memory stores startup configurations, active program instructions, and current data." },
+                    { text: "To permanently archive thousands of user photo and video files over many years", isCorrect: false, rationale: "Long-term archiving is the purpose of backing storage." },
+                    { text: "To physically print hard copies of documents onto paper", isCorrect: false, rationale: "Printing is performed by an output printer device." },
+                    { text: "To convert digital data into analogue electrical signals for speakers", isCorrect: false, rationale: "Audio conversion is handled by a DAC." }
+                ]
+            },
+            {
+                question: "Which two main types of memory make up the internal memory of a computer system?",
+                options: [
+                    { text: "Hard Disk Drives (HDD) and Solid-State Drives (SSD)", isCorrect: false, rationale: "HDDs and SSDs are backing storage devices." },
+                    { text: "Random Access Memory (RAM) and Read-Only Memory (ROM)", isCorrect: true, rationale: "Internal memory consists of RAM and ROM." },
+                    { text: "Cache memory and virtual memory", isCorrect: false, rationale: "Cache and virtual memory utilize RAM and CPU architecture, but RAM and ROM are the two foundational internal memory types." },
+                    { text: "Input buffers and output registers", isCorrect: false, rationale: "Buffers and registers are temporary holding areas." }
+                ]
+            },
+            {
+                question: "What is a key characteristic of Random Access Memory (RAM)?",
+                options: [
+                    { text: "It is permanent, non-volatile memory that cannot be altered.", isCorrect: false, rationale: "Permanent non-volatile memory describes ROM." },
+                    { text: "It is volatile memory where data and programs currently in use are temporarily stored", isCorrect: true, rationale: "RAM is volatile (loses data when powered off) and holds currently running applications and data." },
+                    { text: "It stores the computer's BIOS and startup boot sequence permanently.", isCorrect: false, rationale: "BIOS startup instructions are stored in ROM." },
+                    { text: "It can only be read from by the CPU and never written to.", isCorrect: false, rationale: "RAM can be both read from and written to." }
+                ]
+            },
+            {
+                question: "What happens to the contents of RAM when the computer's power is turned off?",
+                options: [
+                    { text: "All data and program instructions stored in RAM are completely lost", isCorrect: true, rationale: "RAM is volatile memory, meaning it loses all its contents when power is removed." },
+                    { text: "The data is automatically transferred to ROM for safekeeping.", isCorrect: false, rationale: "ROM is permanent and hard-coded; data is not transferred into it from RAM." },
+                    { text: "The contents remain safely stored until the computer is turned back on.", isCorrect: false, rationale: "Retaining data without power describes non-volatile backing storage or ROM." },
+                    { text: "The operating system compresses the RAM contents onto the CPU clock.", isCorrect: false, rationale: "This does not occur." }
+                ]
+            },
+            {
+                question: "Can RAM be both read from and written to by the computer system?",
+                options: [
+                    { text: "Yes, RAM can be freely read from and written to during normal operation", isCorrect: true, rationale: "RAM allows data to be written, updated, and read constantly while applications are running." },
+                    { text: "No, RAM can only be read from and never modified.", isCorrect: false, rationale: "Memory that can only be read from is ROM." },
+                    { text: "Only during the initial startup boot sequence.", isCorrect: false, rationale: "RAM is actively written to throughout computer use." },
+                    { text: "Only when a hardware device driver is being installed.", isCorrect: false, rationale: "RAM handles all active application data." }
+                ]
+            },
+            {
+                question: "What is the primary function of Read-Only Memory (ROM)?",
+                options: [
+                    { text: "To store large games and multimedia application files temporarily", isCorrect: false, rationale: "Temporary application storage is handled by RAM." },
+                    { text: "To store permanent data and instructions needed for the computer to start up, such as the BIOS", isCorrect: true, rationale: "ROM stores permanent startup instructions like the BIOS that enable successful booting." },
+                    { text: "To act as high-speed cache memory for the arithmetic and logic unit", isCorrect: false, rationale: "Cache memory uses high-speed SRAM, not ROM." },
+                    { text: "To buffer data being sent to slow output printers", isCorrect: false, rationale: "Print buffering uses RAM." }
+                ]
+            },
+            {
+                question: "What is a key characteristic of ROM regarding power loss and data modification?",
+                options: [
+                    { text: "It is volatile and can be freely written to by the user.", isCorrect: false, rationale: "RAM is volatile and writable; ROM is non-volatile and read-only." },
+                    { text: "It is non-volatile (retains data when power is off) and can only be read from", isCorrect: true, rationale: "ROM is non-volatile and retains its contents without power, and its data cannot be altered by normal user operations." },
+                    { text: "It erases all startup files every time the computer reboots.", isCorrect: false, rationale: "ROM contents are permanent." },
+                    { text: "It has a much larger storage capacity than modern SSD backing storage.", isCorrect: false, rationale: "ROM chip capacity is typically very small compared to backing storage." }
+                ]
+            },
+            {
+                question: "What does BIOS stand for in computer systems?",
+                options: [
+                    { text: "Binary Integrated Operating System", isCorrect: false, rationale: "This is incorrect terminology." },
+                    { text: "Basic Input/Output System", isCorrect: true, rationale: "BIOS stands for Basic Input/Output System, stored in ROM to load boot files." },
+                    { text: "Backing Internal Operation Storage", isCorrect: false, rationale: "This is incorrect." },
+                    { text: "Balanced Instruction Order Structure", isCorrect: false, rationale: "This is incorrect." }
+                ]
+            },
+            {
+                question: "What happens when a computer is switched on regarding the BIOS stored in ROM?",
+                options: [
+                    { text: "The CPU executes the BIOS instructions stored in ROM to perform startup checks and load the operating system", isCorrect: true, rationale: "The BIOS initializes hardware and loads the operating system boot files during startup." },
+                    { text: "The BIOS instantly deletes all files stored on the hard disk drive.", isCorrect: false, rationale: "BIOS does not delete user files." },
+                    { text: "The BIOS translates high-level programming code into machine code.", isCorrect: false, rationale: "Code translation is done by compilers." },
+                    { text: "The BIOS converts digital data into analogue signals for the monitor.", isCorrect: false, rationale: "Monitor display is managed by the graphics card." }
+                ]
+            },
+            {
+                question: "How does the CPU access internal memory (RAM and ROM) compared to backing storage?",
+                options: [
+                    { text: "The CPU can access internal memory directly, whereas data on backing storage must first be moved into RAM before the CPU can read it", isCorrect: true, rationale: "Internal memory is directly accessible by the CPU, while backing storage data must be loaded into RAM first." },
+                    { text: "The CPU accesses backing storage directly at faster speeds than RAM.", isCorrect: false, rationale: "RAM access speeds are significantly faster than backing storage." },
+                    { text: "The CPU cannot access RAM directly without using an Analogue-to-Digital Converter.", isCorrect: false, rationale: "RAM connects directly to the CPU via memory buses." },
+                    { text: "The CPU only reads from backing storage and ignores RAM completely.", isCorrect: false, rationale: "Active program execution happens in RAM." }
+                ]
+            },
+            {
+                question: "What is the motherboard?",
+                options: [
+                    { text: "A portable USB flash drive used for backing up text documents", isCorrect: false, rationale: "A USB flash drive is secondary storage." },
+                    { text: "The main printed circuit board in a computer that holds the CPU, internal memory, and provides connectors for expansion cards", isCorrect: true, rationale: "The motherboard is the main circuit board linking the processor, memory, and expansion components." },
+                    { text: "An application software package used for financial spreadsheets", isCorrect: false, rationale: "Spreadsheets are application software." },
+                    { text: "A system utility program used to defragment magnetic disk drives", isCorrect: false, rationale: "Disk defragmentation is a utility program." }
+                ]
+            },
+            {
+                question: "Which of the following correctly compares RAM and ROM storage capacity and speed?",
+                options: [
+                    { text: "RAM and ROM are much smaller in capacity and significantly faster in data access than backing storage", isCorrect: true, rationale: "Internal memory chips have smaller capacities and much faster access speeds than backing storage." },
+                    { text: "RAM and ROM have massive multi-terabyte capacities and extremely slow access speeds.", isCorrect: false, rationale: "Backing storage offers multi-terabyte capacities, not internal memory." },
+                    { text: "RAM is permanent, while ROM is volatile.", isCorrect: false, rationale: "This is completely reversed; RAM is volatile, ROM is permanent/non-volatile." },
+                    { text: "ROM can be written to freely, while RAM is read-only.", isCorrect: false, rationale: "RAM is writable; ROM is read-only." }
+                ]
+            },
+            {
+                question: "When a large software application (such as a word processor or photo editor) is launched, where is it loaded from and to?",
+                options: [
+                    { text: "It is loaded from backing storage into RAM so the CPU can execute it", isCorrect: true, rationale: "Large apps are loaded from secondary storage into RAM because the CPU executes active programs from RAM." },
+                    { text: "It is loaded from ROM directly into the system clock.", isCorrect: false, rationale: "ROM holds permanent BIOS startup code." },
+                    { text: "It is loaded from the keyboard into the arithmetic and logic unit.", isCorrect: false, rationale: "Keyboards are input devices." },
+                    { text: "It is loaded from the printer into the control unit.", isCorrect: false, rationale: "Printers are output devices." }
+                ]
+            },
+            {
+                question: "What role does the system bus play in connecting the CPU and internal memory?",
+                options: [
+                    { text: "It acts as a physical transport highway for data, addresses, and control signals between the CPU and memory", isCorrect: true, rationale: "System buses provide the communication pathways between the processor, memory, and peripherals." },
+                    { text: "It physically cools down the processor silicon chip when running heavy games.", isCorrect: false, rationale: "Cooling is handled by heatsinks and fans." },
+                    { text: "It converts digital computer data into analogue electrical audio waves.", isCorrect: false, rationale: "Audio conversion is handled by a DAC." },
+                    { text: "It scans printed documents for optical character recognition.", isCorrect: false, rationale: "Document scanning is performed by optical scanners." }
+                ]
+            },
+            {
+                question: "Why do computers require both RAM and ROM instead of just using one type of internal memory?",
+                options: [
+                    { text: "Because RAM provides fast volatile storage for active programs, while ROM provides permanent non-volatile storage for essential startup instructions", isCorrect: true, rationale: "RAM handles active working data, while ROM secures vital boot instructions that survive power loss." },
+                    { text: "Because RAM is used exclusively for graphics cards, while ROM is used exclusively for keyboards.", isCorrect: false, rationale: "RAM and ROM form the primary internal memory for the CPU." },
+                    { text: "Because ROM has a much larger capacity than RAM for storing user video files.", isCorrect: false, rationale: "Backing storage stores user video files, not ROM." },
+                    { text: "Because RAM requires a lithium battery to retain data when turned off.", isCorrect: false, rationale: "RAM loses data when powered off; CMOS uses a battery." }
+                ]
+            },
+            {
+                question: "What is cache memory, and where is it typically located?",
+                options: [
+                    { text: "A small amount of extremely fast volatile memory located close to or inside the CPU to store frequently used data", isCorrect: true, rationale: "Cache memory stores frequently accessed instructions close to the processor to speed up processing." },
+                    { text: "A large external hard drive plugged into a USB port for backups", isCorrect: false, rationale: "External USB drives are backing storage." },
+                    { text: "A permanent chip on the motherboard storing BIOS configuration data", isCorrect: false, rationale: "BIOS is stored in ROM." },
+                    { text: "A software utility program that clears temporary internet browser files", isCorrect: false, rationale: "Browser cache is software data, whereas hardware cache is high-speed CPU memory." }
+                ]
+            },
+            {
+                question: "Which of the following components is considered volatile memory?",
+                options: [
+                    { text: "Random Access Memory (RAM)", isCorrect: true, rationale: "RAM is volatile memory because its contents are lost when power is turned off." },
+                    { text: "Read-Only Memory (ROM)", isCorrect: false, rationale: "ROM is non-volatile." },
+                    { text: "Solid-State Drive (SSD)", isCorrect: false, rationale: "SSDs are non-volatile backing storage." },
+                    { text: "Hard Disk Drive (HDD)", isCorrect: false, rationale: "HDDs are non-volatile backing storage." }
+                ]
+            },
+            {
+                question: "Which of the following components is considered non-volatile memory?",
+                options: [
+                    { text: "Read-Only Memory (ROM)", isCorrect: true, rationale: "ROM is non-volatile, retaining its data permanently without electrical power." },
+                    { text: "Random Access Memory (RAM)", isCorrect: false, rationale: "RAM is volatile." },
+                    { text: "CPU registers", isCorrect: false, rationale: "CPU registers are volatile temporary storage locations inside the processor." },
+                    { text: "Cache memory SRAM", isCorrect: false, rationale: "Standard CPU cache is volatile and loses data on power down." }
+                ]
+            },
+            {
+                question: "What is the primary reason why backing storage is needed in addition to RAM and ROM?",
+                options: [
+                    { text: "Because RAM is volatile (loses data on power off) and ROM is read-only (cannot save user files), so permanent non-volatile storage is needed for user files and programs", isCorrect: true, rationale: "Backing storage is necessary because RAM loses data when powered off and ROM cannot be written to by users." },
+                    { text: "Because the CPU clock speed cannot function without hard disk platters spinning", isCorrect: false, rationale: "CPU execution does not depend on disk rotation." },
+                    { text: "Because operating systems cannot be loaded into RAM from ROM", isCorrect: true, rationale: "OS files are stored on backing storage and loaded into RAM at startup." },
+                    { text: "Because internal memory chips are too physically large to fit inside modern computers", isCorrect: false, rationale: "Memory chips are extremely small microchips." }
+                ]
+            },
+            {
+                question: "Which component ZNotes and Cambridge coursebooks identify as the 'brain' of the computer system responsible for executing instructions?",
+                options: [
+                    { text: "The Power Supply Unit (PSU)", isCorrect: false, rationale: "The PSU provides electrical power." },
+                    { text: "The Central Processing Unit (CPU) / Processor", isCorrect: true, rationale: "The CPU is universally recognized as the brain of the computer that processes data and executes instructions." },
+                    { text: "The Monitor display screen", isCorrect: false, rationale: "The monitor is an output device." },
+                    { text: "The Network Interface Card (NIC)", isCorrect: false, rationale: "The NIC handles network connectivity." }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const questionCounter = document.getElementById("question-counter");
+        const scoreDisplay = document.getElementById("score-display");
+        const questionBox = document.getElementById("question-box");
+        const optionsContainer = document.getElementById("options-container");
+        const feedbackBox = document.getElementById("feedback-box");
+        const nextBtn = document.getElementById("next-btn");
+        const quizContainer = document.getElementById("quiz-container");
+        const resultsContainer = document.getElementById("results-container");
+        const finalScore = document.getElementById("final-score");
+
+        function loadQuestion() {
+            answered = false;
+            feedbackBox.classList.add("hidden");
+            nextBtn.classList.add("hidden");
+
+            const q = questions[currentQuestionIndex];
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+            scoreDisplay.textContent = `Score: ${score}`;
+            questionBox.textContent = q.question;
+
+            optionsContainer.innerHTML = "";
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.textContent = opt.text;
+                btn.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedIndex) {
+            if (answered) return;
+            answered = true;
+
+            const q = questions[currentQuestionIndex];
+            const allOptionButtons = optionsContainer.children;
+
+            q.options.forEach((opt, idx) => {
+                allOptionButtons[idx].disabled = true;
+                if (opt.isCorrect) {
+                    allOptionButtons[idx].classList.add("correct");
+                } else if (idx === selectedIndex) {
+                    allOptionButtons[idx].classList.add("incorrect");
+                }
+            });
+
+            const selectedOpt = q.options[selectedIndex];
+            feedbackBox.classList.remove("hidden");
+            if (selectedOpt.isCorrect) {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                feedbackBox.className = "feedback-box correct-feedback";
+                feedbackBox.innerHTML = `<strong>Correct!</strong> ${selectedOpt.rationale}`;
+            } else {
+                feedbackBox.className = "feedback-box incorrect-feedback";
+                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${selectedOpt.rationale}`;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                nextBtn.textContent = "Next Question";
+            } else {
+                nextBtn.textContent = "View Results";
+            }
+            nextBtn.classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                quizContainer.classList.add("hidden");
+                resultsContainer.classList.remove("hidden");
+                finalScore.textContent = `You scored ${score} out of ${questions.length}`;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            resultsContainer.classList.add("hidden");
+            quizContainer.classList.remove("hidden");
+            loadQuestion();
+        }
+
+        // Initialize quiz on load
+        loadQuestion();
+    </script>
+</body>
+</html>
